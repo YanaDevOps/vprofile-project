@@ -1,9 +1,10 @@
 version: '3.8'
 services:
   vprodb:
-    image: yanixdo/vprofiledb
     build:
       context: ./Docker-files/db
+    image: yanixdo/vprofiledb
+    container_name: vprodb
     ports:
       - "3306:3306"
     volumes:
@@ -15,7 +16,7 @@ services:
     image: memcached
     ports:
       - "11211:11211"
-
+  
   vpromq01:
     image: rabbitmq
     ports:
@@ -28,17 +29,20 @@ services:
     build:
       context: ./Docker-files/app
     image: yanixdo/vprofileapp
+    container_name: vproapp
     ports:
       - "8080:8080"
-    volumes: 
-      - vproappdata:/usr/local/tomcat/webapps
+    volumes:
+      - vprodappbdata:/usr/local/tomcat/webapps
 
   vproweb:
     build:
       context: ./Docker-files/web
     image: yanixdo/vprofileweb
+    container_name: vproweb
     ports:
       - "80:80"
+
 volumes:
   vprodbdata: {}
-  vproappdata: {}
+  vprodappbdata: {}
